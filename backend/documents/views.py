@@ -18,3 +18,8 @@ class DocumentVersionViewSet(viewsets.ModelViewSet):
     queryset = DocumentVersion.objects.all()
     serializer_class = DocumentVersionSerializer
     permission_classes = [IsAuthenticated]
+
+
+
+
+    
