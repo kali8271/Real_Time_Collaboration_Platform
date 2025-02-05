@@ -1,0 +1,7 @@
+Django>=4.2
+djangorestframework
+channels
+channels-redis
+daphne
+psycopg2-binary
+Pillow
