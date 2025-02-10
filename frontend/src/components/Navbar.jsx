@@ -4,7 +4,7 @@ import { useUser } from "../context/UserContext"; // Import User Context
 import "../styles/Navbar.css"; // Import CSS file
 
 const Navbar = () => {
-  const { user, setUser } = useUser(); // Get user from context
+  const { user, setUser } = useUser() || {}; // Get user from context
 
   // Logout function
   const handleLogout = () => {
