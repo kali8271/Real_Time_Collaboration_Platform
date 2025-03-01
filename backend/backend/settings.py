@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9xbk09vp)i(kkfoxui$h+ys&!!p(4_e)0^jg^4@6!783ip1dcn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -119,6 +119,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+# Channels configuration
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",  # If using Vite
+    "http://localhost:3000",  # If using Create React App
+]
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Allow all methods (GET, POST, PUT, DELETE)
