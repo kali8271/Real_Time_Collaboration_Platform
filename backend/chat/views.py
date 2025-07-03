@@ -17,6 +17,7 @@ class ChatRoomViewSet(viewsets.ModelViewSet):
         return ChatRoom.objects.filter(participants=user)
 
 class MessageViewSet(viewsets.ModelViewSet):
+    queryset = Message.objects.all()
     serializer_class = MessageSerializer
     permission_classes = [permissions.IsAuthenticated]
 
