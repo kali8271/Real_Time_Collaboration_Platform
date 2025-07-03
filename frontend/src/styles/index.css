@@ -1,1 +1,38 @@
 @import "tailwindcss";
+
+/* Light theme (default) */
+body.light {
+  --bg: #f7fafc;
+  --text: #222;
+  --card-bg: #fff;
+  --border: #eee;
+}
+
+body.dark {
+  --bg: #181a1b;
+  --text: #f7fafc;
+  --card-bg: #23272a;
+  --border: #333;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.2s, color 0.2s;
+}
+
+.card, .navbar, .login-container, .signup-container, .profile-container {
+  background: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+}
+
+input, textarea, select, button {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: 2px solid var(--border);
+}

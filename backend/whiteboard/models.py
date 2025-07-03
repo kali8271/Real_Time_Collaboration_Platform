@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.conf import settings
 
 User = get_user_model()
 
@@ -20,3 +21,13 @@ class WhiteboardDrawing(models.Model):
 
     def __str__(self):
         return f"Drawing by {self.user.username} on {self.whiteboard.title}"
+
+class WhiteboardAction(models.Model):
+    whiteboard_id = models.IntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    action = models.CharField(max_length=50)
+    data = models.JSONField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"[{self.timestamp}] {self.user}: {self.action}"

@@ -1,74 +1,86 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../styles/Signup.css"; // Import CSS file
-
-// Background images array
-const backgroundImages = [
-  "/images/img1.jpg",
-  "/images/img2.jpg",
-  "/images/img3.jpg",
-  "/images/img4.jpg",
-  "/images/img5.jpg"
-];
+import { register } from "../services/auth";
+import "../styles/Signup.css";
 
 const Signup = () => {
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [bgIndex, setBgIndex] = useState(0); // Track current background index
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignup = (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
-    console.log("Signing up with:", email, password);
-    navigate("/login"); // Redirect to Login after signup
+    setError("");
+    setSuccess(false);
+    setLoading(true);
+    try {
+      await register(username, email, password);
+      setSuccess(true);
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (err) {
+      setError(
+        err.response?.data?.username?.[0] ||
+        err.response?.data?.email?.[0] ||
+        err.response?.data?.password?.[0] ||
+        err.response?.data?.detail ||
+        "Registration failed!"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
-
-  // Change background image every 30 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setBgIndex((prevIndex) => (prevIndex + 1) % backgroundImages.length);
-    }, 30000); // 30 seconds
-
-    return () => clearInterval(interval); // Cleanup function
-  }, []);
 
   return (
     <div
       className="signup-container"
       style={{
-        backgroundImage: `url(${backgroundImages[bgIndex]})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        transition: "background-image 1s ease-in-out",
+        background: "#f7fafc", // Light gray background for visibility
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
       }}
     >
       <h2 className="signup-title">Sign Up</h2>
       <form onSubmit={handleSignup} className="signup-form">
+        {error && <div style={{ color: "red" }} className="mb-2">{error}</div>}
+        {success && <div style={{ color: "green" }} className="mb-2">Registration successful! Redirecting...</div>}
+        <input
+          type="text"
+          placeholder="Username"
+          className="signup-input"
+          onChange={(e) => setUsername(e.target.value)}
+          value={username}
+          required
+          disabled={loading}
+        />
         <input
           type="email"
           placeholder="Email"
           className="signup-input"
           onChange={(e) => setEmail(e.target.value)}
+          value={email}
           required
+          disabled={loading}
         />
         <input
           type="password"
           placeholder="Password"
           className="signup-input"
           onChange={(e) => setPassword(e.target.value)}
+          value={password}
           required
+          disabled={loading}
         />
-        <button type="submit" className="signup-button">Sign Up</button>
+        <button type="submit" className="signup-button" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
       </form>
-
-      {/* Change Background Button (Manual) */}
-      <button
-        onClick={() => setBgIndex((prev) => (prev + 1) % backgroundImages.length)}
-        className="bg-change-button"
-      >
-        Change Background
-      </button>
     </div>
   );
 };
